@@ -1,0 +1,31 @@
+{
+  "name": "sendgrid-event-logger",
+  "version": "0.0.1",
+  "description": "Logs sendgrid events to Elasticsearch",
+  "main": "sendgrid-event-logger",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "sendgrid",
+    "email",
+    "logging"
+  ],
+  "author": "slebetman@gmail.com",
+  "license": "GPL-2.0",
+  "dependencies": {
+    "basicauth-middleware": "^1.1.0",
+    "body-parser": "^1.15.2",
+    "elasticsearch": "~11.0.1",
+    "express": "~4.14.0",
+    "https": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "chai-stats": "*",
+    "mocha": "*",
+    "istanbul": "*",
+    "mocha-lcov-reporter": "^1.2.0",
+    "node-mocks-http": "^1.5.2"
+  }
+}

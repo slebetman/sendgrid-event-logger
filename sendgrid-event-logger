@@ -1,0 +1,81 @@
+#!/usr/bin/env node
+
+/*
+ * Copyright (C) 2016 TrustedCompany.com
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published bythe Free Software Foundation
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+var elastic = require('elasticsearch');
+var express = require('express');
+var basicauth = require('basicauth-middleware');
+var bodyParser = require('body-parser');
+var server = require('./lib/server');
+var error500 = require('./lib/error500');
+var conf = require('./config.json');
+var https = require('https');
+
+var app = express();
+
+var indexer = new elastic.Client({
+	host: conf.elasticsearch_host
+});
+
+server.init(indexer);
+
+if (conf.use_basicauth) {
+	app.use(basicauth(
+		conf.basicauth.user,
+		conf.basicauth.password
+	));
+}
+
+app.post('/logger',
+	bodyParser.json({limit:'1.5MB',type:'*/*'}),
+	server.logger
+);
+app.get('/status',
+	server.status
+);
+app.get('/about',
+	server.copyright
+);
+app.get('/copyright',
+	server.copyright
+);
+
+// Handle 404
+app.use(function(req, res) {
+	res.setHeader('Content-Type', 'application/json');
+	
+	res.status(400);
+	res.end(JSON.stringify({
+		status: "error",
+		error: 404
+	}));
+});
+
+
+app.use(function(error, req, res, next) {
+	error500(res);
+});
+
+if (conf.use_https) {
+	var credentials = {
+		key: fs.readFileSync(conf.https.key_file, 'utf8'),
+		cert: fs.readFileSync(conf.https.cert_file, 'utf8')
+	};
+	var httpsServer = https.createServer(credentials, app);
+	httpsServer.listen(conf.port);
+}
+else {
+	app.listen(conf.port);
+}
+console.log('Server started..');
