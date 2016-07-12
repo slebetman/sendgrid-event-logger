@@ -3,6 +3,7 @@
 Small, fast http server to log Sendgrid Event Callback API to Elasticsearch
 
 [![Build Status](https://travis-ci.org/slebetman/sendgrid-event-logger.svg?branch=master)](https://travis-ci.org/slebetman/sendgrid-event-logger)
+[![Coverage Status](https://coveralls.io/repos/github/slebetman/sendgrid-event-logger/badge.svg?branch=master)](https://coveralls.io/github/slebetman/sendgrid-event-logger?branch=master)
 
 ## Installing
 
