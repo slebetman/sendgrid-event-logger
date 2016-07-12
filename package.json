@@ -1,6 +1,6 @@
 {
   "name": "sendgrid-event-logger",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Logs sendgrid events to Elasticsearch",
   "main": "sendgrid-event-logger",
   "scripts": {
@@ -28,5 +28,9 @@
 	"coveralls": "^2.11.9",
     "mocha-lcov-reporter": "^1.2.0",
     "node-mocks-http": "^1.5.2"
+  },
+  "repository": {
+	"type": "git",
+	"url": "https://github.com/slebetman/sendgrid-event-logger.git"
   }
 }
