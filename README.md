@@ -2,6 +2,8 @@
 
 Small, fast http server to log Sendgrid Event Callback API to Elasticsearch
 
+[![Build Status](https://travis-ci.org/slebetman/sendgrid-event-logger.svg?branch=master)](https://travis-ci.org/slebetman/sendgrid-event-logger)
+
 ## Installing
 
 1. Install Elasticsearch. Refer to the docs for details:
