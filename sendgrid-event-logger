@@ -19,8 +19,10 @@ var basicauth = require('basicauth-middleware');
 var bodyParser = require('body-parser');
 var server = require('./lib/server');
 var error500 = require('./lib/error500');
-var conf = require('./config.json');
 var https = require('https');
+var fs = require('fs');
+
+var conf = require('./config.json');
 
 var app = express();
 
