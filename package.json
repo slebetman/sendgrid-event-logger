@@ -30,7 +30,10 @@
     "node-mocks-http": "^1.5.2"
   },
   "repository": {
-	"type": "git",
-	"url": "https://github.com/slebetman/sendgrid-event-logger.git"
+    "type": "git",
+    "url": "https://github.com/slebetman/sendgrid-event-logger.git"
+  },
+  "bin": {
+    "sendgrid-event-logger": "./sendgrid-event-logger"
   }
 }
