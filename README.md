@@ -1,4 +1,4 @@
-# ![Logo](https://github.com/slebetman/sendgrid-event-logger/raw/master/logo.png) Sendgrid Event Logger
+# ![Logo](img/logo.png) Sendgrid Event Logger
 
 Small, fast http server to log Sendgrid Event Callback API to Elasticsearch
 
