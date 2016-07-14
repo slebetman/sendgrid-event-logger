@@ -30,8 +30,17 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.ht
 
 2. Configure a new index pattern.
     - Select **"Index contains time-based events"** checkbox
+    
+        ![Kibana config](./img/Kibana-index-type.png)
+        
 	- In the **"Index name or pattern"** entry type: `mail-*`
+	
+	    ![Kibana config](./img/Kibana-index-name.png)
+	    
 	- In the **"Time-field name"** entry select "timestamp"
+	
+	    ![Kibana config](./img/Kibana-time-field.png)
+	
 	- Press **"Create"**
 
 ## License
@@ -39,8 +48,8 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.ht
 Copyright (C) 2016 TrustedCompany.com
 
 This program is free software; you can redistribute it and/or modify
-it under the terms of the **GNU General Public License version 2** as
-published bythe Free Software Foundation
+it under the terms of the GNU General Public License version 2 
+**(GPL-2.0)** as published bythe Free Software Foundation.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
