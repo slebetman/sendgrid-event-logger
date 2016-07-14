@@ -20,6 +20,16 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.ht
 
         ./sendgrid-event-logger
 
+## Integrating with Kibana
+
+1. Install Kibana. Refer to the docs for details:
+
+2. Configure a new index pattern.
+    - Select "Index contains time-based events" checkbox
+	- In the "Index name or pattern" entry type: `mail-*`
+	- In the "Time-field name" entry select "timestamp"
+	- Press "Create"
+
 ## License
 
 Copyright (C) 2016 TrustedCompany.com
