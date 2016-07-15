@@ -45,6 +45,18 @@ fsErr2.writeFileSync = function(){
 	throw err;
 }
 
+var fsErr3 = {
+	readFileSync: function(){
+		var err = new Error('EACCES: permission denied');
+		err.code = 'EACCESS';
+		throw err;
+	},
+	writeFileSync: function(path,data) {
+		this.written += data;
+	},
+	written: ""
+}
+
 describe('config',function(){
 
 	it('should require fs object',function(){
@@ -55,7 +67,7 @@ describe('config',function(){
 		}).to.throw(Error);
 	
 		expect(function(){
-			conf.called = false;
+			conf(fs);
 			conf(fs);
 		}).to.not.throw(Error);
 	});
@@ -89,5 +101,13 @@ describe('config',function(){
 		expect(result.logs.length).to.be.above(1);
 		expect(result.logs.join('\n')).to.contain('ERROR');
 		expect(result.exit).to.be.true;
+	});
+	
+	it('should throw on other errors',function(){
+		fsErr3.written = "";
+		expect(function(){
+			conf.called = false;
+			conf(fsErr3);
+		}).to.throw(Error);
 	});
 });

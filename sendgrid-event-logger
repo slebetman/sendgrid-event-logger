@@ -22,7 +22,12 @@ var error500 = require('./lib/error500');
 var https = require('https');
 var fs = require('fs');
 
-var conf = require('./lib/config')(fs);
+var configParser = require('./lib/config');
+
+if (process.argv[2] == 'install') {
+	configParser.init(fs);
+}
+var config = configParser(fs);
 
 var app = express();
 

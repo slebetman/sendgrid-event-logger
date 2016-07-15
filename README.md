@@ -11,6 +11,12 @@ Small, fast http server to log Sendgrid Event API callback to Elasticsearch
 
 ## Installing
 
+Just install globally with npm:
+
+    npm install -g sendgrid-event-logger
+
+## Setup
+
 1. Install Elasticsearch. Refer to the docs for details:
 https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.html
 
@@ -18,11 +24,11 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.ht
 
         curl -XPUT elasticsearch_server:9200/_template/sendgrid_template -T elasticsearch-template.json
 
-3. Edit config.json if necessary.
+3. Run the server once to install default config:
 
-4. Run the server:
+        ./sendgrid-event-logger install
 
-        ./sendgrid-event-logger
+4. Check /etc/sendgrid-event-logger.json and edit if necessary.
 
 ## Integrating with Kibana
 
