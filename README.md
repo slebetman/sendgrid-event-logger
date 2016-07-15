@@ -27,7 +27,7 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.ht
     If you're running elasticsearch on a port other than 9200 the above command
     will generate an error. Don't worry about it for now.
 
-3. Check /etc/sendgrid-event-logger.json and edit if necessary.
+3. Check `/etc/sendgrid-event-logger.json` and edit if necessary.
 
 ## Integrating with Kibana
 
@@ -48,6 +48,12 @@ https://www.elastic.co/guide/en/kibana/current/setup.html
 	    ![Kibana config](./img/Kibana-time-field.png)
 	
 	- Press **"Create"**
+
+## Implementation detail
+
+All sendgrid events are logged to a time-series index with the prefix
+`mail-`. The server logs events to a new index each day similar
+to how [logstash](https://www.elastic.co/products/logstash) works.
 
 ## License
 
