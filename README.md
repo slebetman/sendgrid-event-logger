@@ -33,6 +33,7 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.ht
 ## Integrating with Kibana
 
 1. Install Kibana. Refer to the docs for details:
+https://www.elastic.co/guide/en/kibana/current/setup.html
 
 2. Configure a new index pattern.
     - Select **"Index contains time-based events"** checkbox
