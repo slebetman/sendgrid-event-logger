@@ -49,7 +49,7 @@ https://www.elastic.co/guide/en/kibana/current/setup.html
 	
 	- Press **"Create"**
 
-## Implementation detail
+## Implementation details
 
 All sendgrid events are logged to a time-series index with the prefix
 `mail-`. The server logs events to a new index each day similar
