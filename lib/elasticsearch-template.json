@@ -1,7 +1,24 @@
 {
 	"template": "mail-*",
 	"settings": {
-		"number_of_shards": 1
+		"number_of_shards": 1,
+		"index": {
+			"analysis": {
+				"tokenizer": {
+					"email_domain_tokenizer": {
+						"type": "pattern",
+						"pattern": "^.+@",
+						"group": -1
+					}
+				},
+				"analyzer": {
+					"email_domain_analyzer": {
+						"type": "custom",
+						"tokenizer": "email_domain_tokenizer"
+					}
+				}
+			}
+		}
 	},
 	"mappings": {
 		"log": {
@@ -28,6 +45,25 @@
 				}
 			],
 			"properties": {
+				"email": {
+					"type" : "string",
+					"index" : "analyzed",
+					"omit_norms" : true,
+					"fielddata" : {
+						"format" : "disabled"
+					},
+					"fields" : {
+						"raw" : {
+							"type": "string",
+							"index" : "not_analyzed"
+						},
+						"domain" : {
+							"type": "string",
+							"index": "analyzed",
+							"analyzer": "email_domain_analyzer"
+						}
+					}
+				},
 				"timestamp": {
 					"type": "date",
 					"format": "epoch_second"
