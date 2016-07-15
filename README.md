@@ -22,12 +22,19 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.ht
 
 2. Install the default config file by running:
 
-        ./sendgrid-event-logger install
+        sendgrid-event-logger install
 		
     If you're running elasticsearch on a port other than 9200 the above command
     will generate an error. Don't worry about it for now.
 
 3. Check `/etc/sendgrid-event-logger.json` and edit if necessary.
+
+4. To run the server, simply type:
+
+        sendgrid-event-logger
+
+    It is highly recommended that you run the server using a process manager like
+    [PM2](https://github.com/Unitech/pm2) or [forever](https://github.com/foreverjs/forever).
 
 ## Integrating with Kibana
 
@@ -54,6 +61,11 @@ https://www.elastic.co/guide/en/kibana/current/setup.html
 All sendgrid events are logged to a time-series index with the prefix
 `mail-`. The server logs events to a new index each day similar
 to how [logstash](https://www.elastic.co/products/logstash) works.
+
+By default the server listens to port 8080 but this can be changed in
+the config file.
+
+The config file is located at: `/etc/sendgrid-event-logger.json`.
 
 ## License
 
