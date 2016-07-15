@@ -10,5 +10,6 @@
   "https": {
   	"key_file": "",
   	"cert_file": ""
-  }
+  },
+  "days_to_retain_log": 365
 }
