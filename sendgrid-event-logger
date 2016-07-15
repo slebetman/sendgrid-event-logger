@@ -22,7 +22,7 @@ var error500 = require('./lib/error500');
 var https = require('https');
 var fs = require('fs');
 
-var conf = require('./config.json');
+var conf = require('./lib/config')(fs);
 
 var app = express();
 
