@@ -27,13 +27,17 @@ var configParser = require('./lib/config');
 if (process.argv[2] == 'install') {
 	configParser.init(fs);
 }
-var config = configParser(fs);
-
-var app = express();
+var conf = configParser(fs);
 
 var indexer = new elastic.Client({
 	host: conf.elasticsearch_host
 });
+
+if (process.argv[2] == 'install') {
+	process.exit();
+}
+
+var app = express();
 
 server.init(indexer);
 

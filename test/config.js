@@ -79,14 +79,14 @@ describe('config',function(){
 		expect(c).to.be.an('object');
 	});
 	
-	it('should install default config if file does not exist',function(){
+	it('should ask user to install if config does not exist',function(){
 		fsErr.written = "";
 		var result = tester(function(){
 			conf.called = false;
 			conf(fsErr);
 		});
 		
-		expect(fsErr.written).to.equal(JSON.stringify(default_config,null,4));
+		expect(fsErr.written).to.equal('');
 		expect(result.logs.length).to.be.above(0);
 		expect(result.exit).to.be.true;
 	});
