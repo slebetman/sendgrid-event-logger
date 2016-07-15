@@ -1,5 +1,4 @@
 var mockHttp = require('node-mocks-http');
-var tester = require('./test_env');
 var chai = require('chai');
 var expect = chai.expect;
 var error500 = require('../lib/error500');
