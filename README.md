@@ -17,18 +17,17 @@ Just install globally with npm:
 
 ## Setup
 
-1. Install Elasticsearch. Refer to the docs for details:
+1. Install and run Elasticsearch. Refer to the docs for details:
 https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.html
 
-2. Upload the index template to elasticsearch:
-
-        curl -XPUT elasticsearch_server:9200/_template/sendgrid_template -T elasticsearch-template.json
-
-3. Run the server once to install default config:
+2. Install the default config file by running:
 
         ./sendgrid-event-logger install
+		
+    If you're running elasticsearch on a port other than 9200 the above command
+    will generate an error. Don't worry about it for now.
 
-4. Check /etc/sendgrid-event-logger.json and edit if necessary.
+3. Check /etc/sendgrid-event-logger.json and edit if necessary.
 
 ## Integrating with Kibana
 

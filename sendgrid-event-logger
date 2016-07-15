@@ -21,8 +21,43 @@ var server = require('./lib/server');
 var error500 = require('./lib/error500');
 var https = require('https');
 var fs = require('fs');
+var print = require('./lib/print');
 
 var configParser = require('./lib/config');
+
+function checkElasticConnection (es,callback) {
+	indexer.indices.existsTemplate({
+		name: 'sendgrid_template'
+	},(err,exist)=>{
+		if (err) {
+			print(`
+				ERROR: Cannot connect to elasticsearch
+				
+				Please check the settings in ${configParser.configPath}.
+				Also, ensure that elasticsearch is running.
+			`);
+			process.exit();	
+		}
+		if (!exist) {
+			print('Installing template..');
+			var template = require('./lib/elasticsearch-template.json');
+			indexer.indices.putTemplate({
+				name: 'sendgrid_template',
+				body: template
+			},(err)=>{
+				if (err) {
+					print('ERROR:' + err);	
+				}
+				else {
+					callback();
+				}
+			});
+		}
+		else {
+			callback();
+		}
+	});
+}
 
 if (process.argv[2] == 'install') {
 	configParser.init(fs);
@@ -30,63 +65,76 @@ if (process.argv[2] == 'install') {
 var conf = configParser(fs);
 
 var indexer = new elastic.Client({
-	host: conf.elasticsearch_host
+	host: conf.elasticsearch_host,
+	log: function(){
+		this.error = ()=>{};
+		this.warning = ()=>{};
+		this.info = ()=>{};
+		this.debug = ()=>{};
+		this.trace = ()=>{};
+		this.close = ()=>{};
+	}
 });
 
 if (process.argv[2] == 'install') {
-	process.exit();
-}
-
-var app = express();
-
-server.init(indexer);
-
-if (conf.use_basicauth) {
-	app.use(basicauth(
-		conf.basicauth.user,
-		conf.basicauth.password
-	));
-}
-
-app.post('/logger',
-	bodyParser.json({limit:'1.5MB',type:'*/*'}),
-	server.logger
-);
-app.get('/status',
-	server.status
-);
-app.get('/about',
-	server.copyright
-);
-app.get('/copyright',
-	server.copyright
-);
-
-// Handle 404
-app.use(function(req, res) {
-	res.setHeader('Content-Type', 'application/json');
-	
-	res.status(400);
-	res.end(JSON.stringify({
-		status: "error",
-		error: 404
-	}));
-});
-
-
-app.use(function(error, req, res, next) {
-	error500(res);
-});
-
-if (conf.use_https) {
-	var credentials = {
-		key: fs.readFileSync(conf.https.key_file, 'utf8'),
-		cert: fs.readFileSync(conf.https.cert_file, 'utf8')
-	};
-	var httpsServer = https.createServer(credentials, app);
-	httpsServer.listen(conf.port);
+	checkElasticConnection(indexer,function(){
+		process.exit();
+	});
 }
 else {
-	app.listen(conf.port);
+	checkElasticConnection(indexer,()=>{
+		var app = express();
+		
+		server.init(indexer);
+		
+		if (conf.use_basicauth) {
+			app.use(basicauth(
+				conf.basicauth.user,
+				conf.basicauth.password
+			));
+		}
+		
+		app.post('/logger',
+			bodyParser.json({limit:'1.5MB',type:'*/*'}),
+			server.logger
+		);
+		app.get('/status',
+			server.status
+		);
+		app.get('/about',
+			server.copyright
+		);
+		app.get('/copyright',
+			server.copyright
+		);
+		
+		// Handle 404
+		app.use(function(req, res) {
+			res.setHeader('Content-Type', 'application/json');
+			
+			res.status(400);
+			res.end(JSON.stringify({
+				status: "error",
+				error: 404
+			}));
+		});
+		
+		
+		app.use(function(error, req, res, next) {
+			error500(res);
+		});
+		
+		if (conf.use_https) {
+			var credentials = {
+				key: fs.readFileSync(conf.https.key_file, 'utf8'),
+				cert: fs.readFileSync(conf.https.cert_file, 'utf8')
+			};
+			var httpsServer = https.createServer(credentials, app);
+			httpsServer.listen(conf.port);
+		}
+		else {
+			app.listen(conf.port);
+		}
+		console.log('Server started..');
+	});
 }
-console.log('Server started..');
