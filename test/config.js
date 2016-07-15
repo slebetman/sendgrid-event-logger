@@ -38,6 +38,13 @@ var fsErr = {
 	written: ""
 }
 
+var fsErr2 = Object.create(fsErr);
+fsErr2.writeFileSync = function(){
+	var err = new Error('EACCES: permission denied');
+	err.code = 'EACCES';
+	throw err;
+}
+
 describe('config',function(){
 
 	it('should require fs object',function(){
@@ -69,6 +76,18 @@ describe('config',function(){
 		
 		expect(fsErr.written).to.equal(JSON.stringify(default_config,null,4));
 		expect(result.logs.length).to.be.above(0);
+		expect(result.exit).to.be.true;
+	});
+	
+	it('should warn if cannot write to /etc',function(){
+		fsErr2.written = "";
+		var result = tester(function(){
+			conf.called = false;
+			conf(fsErr2);
+		});
+		
+		expect(result.logs.length).to.be.above(1);
+		expect(result.logs.join('\n')).to.contain('ERROR');
 		expect(result.exit).to.be.true;
 	});
 });
