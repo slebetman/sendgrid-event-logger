@@ -5,25 +5,14 @@ tester = require('./test_env');
 
 var conf = require('../lib/config');
 
-var default_config = {
-	"elasticsearch_host": "localhost:9200",
-	"port": 8080,
-	"use_basicauth": false,
-	"basicauth" : {
-		"user": "",
-		"password": ""
-	},
-	"use_https": false,
-	"https": {
-		"key_file": "",
-		"cert_file": ""
-	}
-};
-
 var fs = {
 	readFileSync: function(){
 		return JSON.stringify(default_config,null,4);
-	}
+	},
+	writeFileSync: function(path,data) {
+		this.written += data;
+	},
+	written: ""
 };
 
 var fsErr = {
@@ -92,7 +81,6 @@ describe('config',function(){
 	});
 	
 	it('should warn if cannot write to /etc',function(){
-		fsErr2.written = "";
 		var result = tester(function(){
 			conf.called = false;
 			conf(fsErr2);
@@ -109,5 +97,23 @@ describe('config',function(){
 			conf.called = false;
 			conf(fsErr3);
 		}).to.throw(Error);
+	});
+	
+	it('should provide a function to install config',function(){
+		fs.written = "";
+		var result = tester(function(){
+			conf.init(fs);
+		});
+		
+		expect(JSON.parse(fs.written)).to.deep.equal(default_config);
+		expect(result.logs.join('\n')).to.contain('installed');
+	});
+	
+	it('should handle write errors when installing config',function(){
+		var result = tester(function(){
+			conf.init(fsErr2);
+		});
+		
+		expect(result.logs.join('\n')).to.contain('ERROR');
 	});
 });
