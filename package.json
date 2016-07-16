@@ -1,6 +1,6 @@
 {
   "name": "sendgrid-event-logger",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "Logs sendgrid events to Elasticsearch",
   "main": "sendgrid-event-logger",
   "scripts": {
@@ -15,7 +15,6 @@
   "license": "GPL-2.0",
   "dependencies": {
     "basicauth-middleware": "^1.1.0",
-    "body-parser": "^1.15.2",
     "elasticsearch": "~11.0.1",
     "express": "~4.14.0",
     "https": "^1.0.0"

@@ -1,6 +1,6 @@
 # ![Logo](./img/logo.png) Sendgrid Event Logger
 
-Small, fast http server to log Sendgrid Event API callback to Elasticsearch
+Small, fast http server to log Sendgrid Event Webhook callback to Elasticsearch
 
 [![Build Status](https://travis-ci.org/slebetman/sendgrid-event-logger.svg?branch=master)](https://travis-ci.org/slebetman/sendgrid-event-logger)
 [![Coverage Status](https://coveralls.io/repos/github/slebetman/sendgrid-event-logger/badge.svg?branch=master)](https://coveralls.io/github/slebetman/sendgrid-event-logger?branch=master)
@@ -36,6 +36,17 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.ht
     It is highly recommended that you run the server using a process manager like
     [PM2](https://github.com/Unitech/pm2) or [forever](https://github.com/foreverjs/forever).
 
+5. Configure your Sendgrid account to point the Event Webhook to:
+
+        http://your.server.address:port/logger
+
+    Refer to the docs for how to set up the Event Webhook:
+    https://sendgrid.com/docs/API_Reference/Webhooks/event.html
+    
+    Note: If you enable basic auth then set the URL to:
+    
+        http://username:password@your.server.address:port/logger
+
 ## Integrating with Kibana
 
 1. Install Kibana. Refer to the docs for details:
@@ -56,6 +67,35 @@ https://www.elastic.co/guide/en/kibana/current/setup.html
 	
 	- Press **"Create"**
 
+## Configuration
+
+The config file is located at: `/etc/sendgrid-event-logger.json`.
+The following are the configurations available:
+
+- `elasticsearch_host`
+    Location of the elasticsearch server.
+    
+- `port`
+    The port the server listens on
+
+- `use_basicauth`
+    Enable or disable basic authentication
+
+- `basicauth.user`
+    Login username if basicauth is enabled
+    
+- `basicauth.password`
+    Login password if basicauth is enabled
+    
+- `use_https`
+    Enable or disable TLS
+
+- `https.key_file`
+    Location of TLS key file on disk
+
+- `https.cert_file`
+    Location of TLS certificate file on disk
+
 ## Implementation details
 
 All sendgrid events are logged to a time-series index with the prefix
@@ -65,8 +105,27 @@ to how [logstash](https://www.elastic.co/products/logstash) works.
 By default the server listens to port 8080 but this can be changed in
 the config file.
 
-The config file is located at: `/etc/sendgrid-event-logger.json`.
+The server exposes 2 URL endpoints:
 
+- `POST /logger`
+    This receives data from Sendgrid Event Webhook callback
+    It expects the data to be an array of events. At minimum, the
+    data format must be at least:
+    
+        [
+            {
+                timestamp: ${unix_timestamp}
+            }
+        ]
+        
+    The only mandatory field is `timestamp`. Which means you can also
+    post your own events to this URL if you want to correlate your
+    data with sendgrid events.
+
+- `GET /status`
+    This simply returns `{status:'ok'}`. This URL may be used to check
+    if the server is still alive.
+    
 ## License
 
 Copyright (C) 2016 TrustedCompany.com
