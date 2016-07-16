@@ -95,6 +95,11 @@ The following are the configurations available:
 
 - `https.cert_file`
     Location of TLS certificate file on disk
+	
+- `days_to_retain_log`
+	Number of days to keep logs. Logs older than this
+	will be deleted periodically. Set to `0` or `false`
+	to disable automatic deletion of old logs.
 
 ## Implementation details
 
