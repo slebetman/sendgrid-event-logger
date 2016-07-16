@@ -21,6 +21,7 @@ var error500 = require('./lib/error500');
 var https = require('https');
 var fs = require('fs');
 var print = require('./lib/print');
+var cleaner = require('./lib/cleanup-logs');
 
 var configParser = require('./lib/config');
 
@@ -146,5 +147,6 @@ else {
 			app.listen(conf.port);
 		}
 		console.log('Server started..');
+		setInterval(cleaner(indexer,conf.days_to_retain_log),cleaner.days(1));
 	});
 }
