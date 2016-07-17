@@ -26,4 +26,23 @@ describe('json-post-middleware',()=>{
 		req.emit('data',testPayload);
 	});
 	
+	it('should handle post request with multiple packets',(done)=>{
+		var testPayload = JSON.stringify({hello:'world'});
+	
+		var req = mockHttp.createRequest({
+			method: 'POST',
+			headers: {
+				'content-length': testPayload.length
+			}
+		});
+		var res = mockHttp.createResponse();
+		
+		middleware(req,res,()=>{
+			expect(req.body).to.deep.equal(JSON.parse(testPayload));
+			done();
+		});
+		
+		req.emit('data',testPayload.substr(0,5));
+		req.emit('data',testPayload.substr(5));
+	});
 });
