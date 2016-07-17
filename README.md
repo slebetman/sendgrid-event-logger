@@ -4,6 +4,7 @@ Small, fast http server to log Sendgrid Event Webhook callback to Elasticsearch
 
 [![npm version](https://badge.fury.io/js/sendgrid-event-logger.svg)](https://badge.fury.io/js/sendgrid-event-logger)
 [![Build Status](https://travis-ci.org/slebetman/sendgrid-event-logger.svg?branch=master)](https://travis-ci.org/slebetman/sendgrid-event-logger)
+[![codecov](https://codecov.io/gh/slebetman/sendgrid-event-logger/branch/master/graph/badge.svg)](https://codecov.io/gh/slebetman/sendgrid-event-logger)
 
 ![Kibana](./img/Kibana-Screen-Shot.png)
 
