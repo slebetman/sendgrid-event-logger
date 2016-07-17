@@ -4,4 +4,4 @@ node_js:
   - "4"
   - "node"
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash) -t 4cdb02bb-7ce7-4592-a116-95069d2be8ac
