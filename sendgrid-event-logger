@@ -25,42 +25,9 @@ var fs = require('fs');
 var print = require('./lib/print');
 var cleaner = require('./lib/cleanup-logs');
 var postMiddleware = require('./lib/json-post-middleware');
+var checkElasticConnection = require('./lib/elasticsearch-check');
 
 var configParser = require('./lib/config');
-
-function checkElasticConnection (es,callback) {
-	indexer.indices.existsTemplate({
-		name: 'sendgrid_template'
-	},(err,exist)=>{
-		if (err) {
-			print(`
-				ERROR: Cannot connect to elasticsearch
-				
-				Please check the settings in ${configParser.configPath}.
-				Also, ensure that elasticsearch is running.
-			`);
-			process.exit();	
-		}
-		if (!exist) {
-			print('Installing template..');
-			var template = require('./lib/elasticsearch-template.json');
-			indexer.indices.putTemplate({
-				name: 'sendgrid_template',
-				body: template
-			},(err)=>{
-				if (err) {
-					print('ERROR:' + err);	
-				}
-				else {
-					callback();
-				}
-			});
-		}
-		else {
-			callback();
-		}
-	});
-}
 
 if (process.argv[2] == 'install') {
 	configParser.init(fs);
