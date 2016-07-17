@@ -4,7 +4,7 @@
   "description": "Logs sendgrid events to Elasticsearch",
   "main": "sendgrid-event-logger",
   "scripts": {
-    "test": "istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "test": "mocha"
   },
   "keywords": [
     "sendgrid",
