@@ -99,9 +99,18 @@ The following are the configurations available:
     Location of TLS certificate file on disk
 	
 - `days_to_retain_log`
-	Number of days to keep logs. Logs older than this
-	will be deleted periodically. Set to `0` or `false`
-	to disable automatic deletion of old logs.
+    Number of days to keep logs. Logs older than this
+    will be deleted periodically. Set to `0` or `false`
+    to disable automatic deletion of old logs.
+
+    > Note: I've personally found that elasticsearch takes up
+    > roughly 200MB of disk space for every 100000 emails delivered
+    > by Sendgrid. So you can use it as a rough guideline to
+    > calculate how much disk you need. For example, if you send
+    > 200k emails per month on average then you'd need 400MB per
+    > month or roughly 5GB per year. You can then set
+    > `days_to_retain_log` appropriately depending on how much
+    > disk space you have.
 
 ## Implementation details
 
