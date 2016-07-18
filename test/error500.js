@@ -17,7 +17,6 @@ describe('error500',function(){
 		var body = res._getData();
 		
 		expect(res.statusCode).to.equal(500);
-		expect(headers['Content-Type']).to.equal('application/json');
 		expect(body).to.equal('{"status":"error","error":500}');
 	});
 	
@@ -32,7 +31,6 @@ describe('error500',function(){
 		var body = res._getData();
 		
 		expect(res.statusCode).to.equal(500);
-		expect(headers['Content-Type']).to.equal('application/json');
 		expect(body).to.equal('{"status":"error","error":500,"detail":"HELLO"}');
 	});
 });

@@ -55,7 +55,6 @@ describe('server',function(){
 		
 		expect(res.statusCode).to.equal(200);
 		expect(res._isEndCalled()).to.be.true;
-		expect(headers['Content-Type']).to.equal('application/json');
 		expect(body).to.equal(JSON.stringify({status:'ok'}));
 	});
 
@@ -73,7 +72,6 @@ describe('server',function(){
 		var body = res._getData();
 		
 		expect(res.statusCode).to.equal(500);
-		expect(headers['Content-Type']).to.equal('application/json');
 		expect(result.logs[0]).to.equal('Error: {}');
 	});
 	
@@ -91,7 +89,6 @@ describe('server',function(){
 		var body = res._getData();
 		
 		expect(res.statusCode).to.equal(500);
-		expect(headers['Content-Type']).to.equal('application/json');
 		expect(body).to.contain('error');
 	});
 	
@@ -109,7 +106,6 @@ describe('server',function(){
 		var body = res._getData();
 		
 		expect(res.statusCode).to.equal(500);
-		expect(headers['Content-Type']).to.equal('application/json');
 		expect(body).to.contain('error');
 	});
 	
@@ -125,7 +121,6 @@ describe('server',function(){
 		
 		expect(res.statusCode).to.equal(200);
 		expect(res._isEndCalled()).to.be.true;
-		expect(headers['Content-Type']).to.equal('application/json');
 		expect(body).to.equal(JSON.stringify({status:'ok'}));
 	});
 	
@@ -141,6 +136,5 @@ describe('server',function(){
 		
 		expect(res.statusCode).to.equal(200);
 		expect(res._isEndCalled()).to.be.true;
-		expect(headers['Content-Type']).to.equal('application/json');
 	});
 });
