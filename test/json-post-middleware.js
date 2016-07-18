@@ -26,7 +26,7 @@ describe('json-post-middleware',()=>{
 		req.emit('data',testPayload);
 	});
 	
-	it('should handle post request with multiple packets',(done)=>{
+	it('should handle post request with multiple packets',()=>{
 		var testPayload = JSON.stringify({hello:'world'});
 	
 		var req = mockHttp.createRequest({
@@ -37,12 +37,38 @@ describe('json-post-middleware',()=>{
 		});
 		var res = mockHttp.createResponse();
 		
+		var callback_is_called = false;
 		middleware(req,res,()=>{
-			expect(req.body).to.deep.equal(JSON.parse(testPayload));
-			done();
+			callback_is_called = true;
 		});
 		
 		req.emit('data',testPayload.substr(0,5));
 		req.emit('data',testPayload.substr(5));
+		expect(req.body).to.deep.equal(JSON.parse(testPayload));
+		expect(callback_is_called).to.be.true;
+	});
+	
+	it('should handle malformed JSON data',()=>{
+		var testPayload = "monkey}}[";
+		
+		var req = mockHttp.createRequest({
+			method: 'POST',
+			headers: {
+				'content-length': testPayload.length
+			}
+		});
+		var res = mockHttp.createResponse();
+		
+		var callback_is_called = false;
+		middleware(req,res,()=>{
+			callback_is_called = true;
+		});
+		
+		tester(()=>{
+			req.emit('data',testPayload);
+		});
+		expect(callback_is_called).to.be.false;
+		expect(res._isEndCalled()).to.be.true;
+		expect(res.statusCode).to.equal(500);
 	});
 });
