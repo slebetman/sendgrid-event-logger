@@ -64,6 +64,12 @@ else {
 			));
 		}
 		
+		// We serve only JSON data:
+		app.use(function(req, res, next) {
+			res.setHeader('Content-Type', 'application/json');
+			next();
+		});
+		
 		app.post('/logger',
 			postMiddleware,
 			server.logger
@@ -71,17 +77,20 @@ else {
 		app.get('/status',
 			server.status
 		);
-		app.get('/about',
-			server.copyright
-		);
 		app.get('/copyright',
 			server.copyright
 		);
+		app.get('/version',function(req,res){
+			var p = require('./package.json');
+			res.end(JSON.stringify({
+				name: p.name,
+				version: p.version,
+				repository: p.repository.url
+			}));
+		});
 		
 		// Handle 404
 		app.use(function(req, res) {
-			res.setHeader('Content-Type', 'application/json');
-			
 			res.status(400);
 			res.end(JSON.stringify({
 				status: "error",

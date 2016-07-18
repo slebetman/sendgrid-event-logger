@@ -121,7 +121,7 @@ to how [logstash](https://www.elastic.co/products/logstash) works.
 By default the server listens to port 8080 but this can be changed in
 the config file.
 
-The server exposes 2 URL endpoints:
+The server exposes 4 URL endpoints:
 
 - `POST /logger`
     This receives data from Sendgrid Event Webhook callback
@@ -141,6 +141,12 @@ The server exposes 2 URL endpoints:
 - `GET /status`
     This simply returns `{status:'ok'}`. This URL may be used to check
     if the server is still alive.
+	
+- `GET /copyright`
+    Returns copyright and license information.
+
+- `GET /version`
+    Returns version information.
     
 ## License
 
