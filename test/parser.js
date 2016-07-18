@@ -38,6 +38,12 @@ describe('parser',function(){
 		
 		expect(n).to.equal('mail-2013.10.03');
 	});
+	
+	it('should reject events without timestamp',()=>{
+		expect(()=>{
+			var e = p.processEvent({mango:'jango'});
+		}).to.throw(Error);
+	});
 
 	it('should generate array suitable for bulk indexing',function(){
 		var a = p.processBulk([makeEvent(),makeEvent()]);
@@ -47,5 +53,17 @@ describe('parser',function(){
 		expect(a[0].index._type).to.equal('log');
 		expect(a[2].index._index).to.equal('mail-2013.10.03');
 		expect(a[3]).to.deep.equal(p.processEvent(makeEvent()));
+	});
+	
+	it('should reject non-arrays',()=>{
+		expect(()=>{
+			var a = p.processBulk('mango');
+		}).to.throw(Error);
+		expect(()=>{
+			var a = p.processBulk(100);
+		}).to.throw(Error);
+		expect(()=>{
+			var a = p.processBulk({mango:'jango'});
+		}).to.throw(Error);
 	});
 });

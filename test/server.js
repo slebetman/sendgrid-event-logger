@@ -77,6 +77,42 @@ describe('server',function(){
 		expect(result.logs[0]).to.equal('Error: {}');
 	});
 	
+	it('should handle invalid events',function(){
+		var req = mockHttp.createRequest();
+		var res = mockHttp.createResponse();
+		req.body = {mango:"jango"};
+		
+		server.init(mockElasticClient());
+		tester(()=>{
+			server.logger(req,res);
+		});
+		
+		var headers = res._getHeaders();
+		var body = res._getData();
+		
+		expect(res.statusCode).to.equal(500);
+		expect(headers['Content-Type']).to.equal('application/json');
+		expect(body).to.contain('error');
+	});
+	
+	it('should handle missing/invalid timestamp',function(){
+		var req = mockHttp.createRequest();
+		var res = mockHttp.createResponse();
+		req.body = [{mango:"jango"}];
+		
+		server.init(mockElasticClient());
+		tester(()=>{
+			server.logger(req,res);
+		});
+		
+		var headers = res._getHeaders();
+		var body = res._getData();
+		
+		expect(res.statusCode).to.equal(500);
+		expect(headers['Content-Type']).to.equal('application/json');
+		expect(body).to.contain('error');
+	});
+	
 	it('should provide health check endpoint',function(){
 		var req = mockHttp.createRequest();
 		var res = mockHttp.createResponse();
