@@ -22,14 +22,15 @@ function makeEvent () {
 	};
 }
 
-function mockElasticClient (err) {
+function mockElasticClient (err,data) {
+	data = data || {};
 	return {
 		bulk: function(arg, callback) {
 			if (err) {
-				callback(err,{});
+				callback(err,data);
 			}
 			else {
-				callback(null,{});
+				callback(null,data);
 			}
 		}
 	};
@@ -73,6 +74,30 @@ describe('server',function(){
 		
 		expect(res.statusCode).to.equal(500);
 		expect(result.logs[0]).to.equal('Error: {}');
+	});
+	
+	it('should handle elasticsearch event errors',function(){
+		var req = mockHttp.createRequest();
+		var res = mockHttp.createResponse();
+		req.body = [makeEvent()];
+		
+		server.init(mockElasticClient(false,{
+			errors: 1,
+			items: [{
+				create: {
+					error: true
+				}
+			}]
+		}));
+		var result = tester(function(){
+			server.logger(req,res);
+		});
+		
+		var headers = res._getHeaders();
+		var body = res._getData();
+		
+		expect(res.statusCode).to.equal(500);
+		expect(result.logs[0]).to.contain('Error:');
 	});
 	
 	it('should handle invalid events',function(){
