@@ -2,14 +2,14 @@
 
 Small, fast http server to log Sendgrid Event Webhook callback to Elasticsearch
 
+![Kibana](./img/Kibana-Screen-Shot.png)
+
+*Monitoring sendgrid events on Kibana dashboard*
+
 [![npm stats](https://nodei.co/npm/sendgrid-event-logger.png?downloads=true)](https://www.npmjs.com/package/sendgrid-event-logger)
 
 [![Build Status](https://travis-ci.org/slebetman/sendgrid-event-logger.svg?branch=master)](https://travis-ci.org/slebetman/sendgrid-event-logger)
 [![codecov](https://img.shields.io/codecov/c/github/slebetman/sendgrid-event-logger.svg)](https://codecov.io/gh/slebetman/sendgrid-event-logger)
-
-![Kibana](./img/Kibana-Screen-Shot.png)
-
-*Monitoring sendgrid events on Kibana dashboard*
 
 ## Installing
 
